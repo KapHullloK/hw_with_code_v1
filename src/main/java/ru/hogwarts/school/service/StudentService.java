@@ -1,0 +1,45 @@
+package ru.hogwarts.school.service;
+
+import org.springframework.stereotype.Service;
+import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.StudentRepository;
+
+import java.util.List;
+
+@Service
+public class StudentService {
+
+    private StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
+    public Student add(Student student) {
+        return studentRepository.save(student);
+    }
+
+    public Student get(long id) {
+        return studentRepository.findById(id).orElse(null);
+    }
+
+    public Student update(long id, Student student) {
+        if (studentRepository.existsById(id)) {
+            return studentRepository.save(student);
+        }
+        return null;
+    }
+
+    public Student delete(long id) {
+        Student student = this.get(id);
+        if (student != null) {
+            studentRepository.delete(student);
+        }
+        return student;
+    }
+
+    public List<Student> getStudentsByAge(int age) {
+        return studentRepository.findAllByAge(age);
+    }
+
+}
