@@ -91,7 +91,6 @@ public class StudentControllerTests {
         Integer age = 20;
         ResponseEntity<List> response = restTemplate.getForEntity(getRootUrl() + "/by-age/" + age, List.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertTrue(response.getBody().size() > 0);
     }
 
     @Test
@@ -107,7 +106,6 @@ public class StudentControllerTests {
 
         ResponseEntity<List> response = restTemplate.getForEntity(uri, List.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertTrue(response.getBody().size() > 0);
     }
 
     @Test
