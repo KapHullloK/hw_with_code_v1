@@ -9,12 +9,13 @@ import org.springframework.http.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.model.Faculty;
+import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.net.URI;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
@@ -26,6 +27,12 @@ public class StudentControllerTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private FacultyRepository facultyRepository;
+
     private String getRootUrl() {
         return "http://localhost:" + port + "/student";
     }
@@ -34,6 +41,8 @@ public class StudentControllerTests {
 
     @BeforeEach
     void setUp() {
+        clearDatabase();
+
         Student student = new Student();
         student.setName("Alice");
         student.setAge(20);
@@ -41,6 +50,11 @@ public class StudentControllerTests {
         ResponseEntity<Student> response = restTemplate.postForEntity(getRootUrl(), student, Student.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         createdStudentId = response.getBody().getId();
+    }
+
+    private void clearDatabase() {
+        studentRepository.deleteAll();
+        facultyRepository.deleteAll();
     }
 
     @Test

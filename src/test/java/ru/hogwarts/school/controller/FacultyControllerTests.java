@@ -9,6 +9,8 @@ import org.springframework.http.*;
 import org.springframework.web.util.UriComponentsBuilder;
 import ru.hogwarts.school.model.Faculty;
 import ru.hogwarts.school.model.Student;
+import ru.hogwarts.school.repository.FacultyRepository;
+import ru.hogwarts.school.repository.StudentRepository;
 
 import java.net.URI;
 import java.util.List;
@@ -25,6 +27,12 @@ public class FacultyControllerTests {
     @Autowired
     private TestRestTemplate restTemplate;
 
+    @Autowired
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private FacultyRepository facultyRepository;
+
     private String getRootUrl() {
         return "http://localhost:" + port + "/faculty";
     }
@@ -33,6 +41,8 @@ public class FacultyControllerTests {
 
     @BeforeEach
     void setUp() {
+        clearDatabase();
+
         Faculty faculty = new Faculty();
         faculty.setName("Gryffindor");
         faculty.setColor("Red");
@@ -40,6 +50,11 @@ public class FacultyControllerTests {
         ResponseEntity<Faculty> response = restTemplate.postForEntity(getRootUrl(), faculty, Faculty.class);
         assertThat(response.getStatusCode()).isEqualTo(HttpStatus.OK);
         createdFacultyId = response.getBody().getId();
+    }
+
+    private void clearDatabase() {
+        studentRepository.deleteAll();
+        facultyRepository.deleteAll();
     }
 
     @Test
