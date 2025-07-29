@@ -98,5 +98,17 @@ public class StudentController {
         return ResponseEntity.ok(students);
     }
 
+    @GetMapping("/names")
+    public ResponseEntity<List<String>> getNamesStudents() {
+        List<String> names = studentService.getAllNamesStudents();
+        if (names.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(names);
+    }
 
+    @GetMapping("/avg-s")
+    public ResponseEntity<Double> getAvgAgeStudentsByStream() {
+        return ResponseEntity.ok(studentService.getAvgAgeStudentsByStream());
+    }
 }
