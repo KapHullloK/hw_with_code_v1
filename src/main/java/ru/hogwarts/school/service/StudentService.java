@@ -102,4 +102,48 @@ public class StudentService {
                 .average()
                 .orElse(0.0);
     }
+
+    public void getNameStudentsByThreads() {
+        logger.info("Was invoked method for get name students by threads");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .toList();
+
+        int cnt_tasks = 2;
+        int cnt_names = 6;
+        for (int i = 0; i < cnt_names; i += cnt_tasks) {
+            final int start = i;
+            final int end = Math.min(start + cnt_tasks, cnt_names);
+            Thread thread = new Thread(() -> {
+                for (int thread_i = start; thread_i < end; ++thread_i) {
+                    System.out.println(names.get(thread_i) + " | " + thread_i);
+                }
+            });
+            thread.start();
+        }
+    }
+
+    public void getNameStudentsByThreadsSynchro() {
+        logger.info("Was invoked method for get name students by threads synchronized");
+        List<String> names = studentRepository.findAll().stream()
+                .map(Student::getName)
+                .toList();
+
+        int cnt_tasks = 2;
+        int cnt_names = 6;
+        for (int i = 0; i < cnt_names; i += cnt_tasks) {
+            final int start = i;
+            final int end = Math.min(start + cnt_tasks, cnt_names);
+            Thread thread = new Thread(() -> {
+                this.printNamesSync(names, start, end);
+            });
+            thread.start();
+        }
+    }
+
+    private synchronized void printNamesSync(List<String> names, int start, int end) {
+        for (int i = start; i < end; i++) {
+            System.out.println(names.get(i) + " | " + i);
+        }
+    }
 }

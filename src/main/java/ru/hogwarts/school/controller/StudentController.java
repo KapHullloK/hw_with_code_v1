@@ -9,7 +9,7 @@ import ru.hogwarts.school.service.StudentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/student")
+@RequestMapping("/students")
 public class StudentController {
     private final StudentService studentService;
 
@@ -110,5 +110,15 @@ public class StudentController {
     @GetMapping("/avg-s")
     public ResponseEntity<Double> getAvgAgeStudentsByStream() {
         return ResponseEntity.ok(studentService.getAvgAgeStudentsByStream());
+    }
+
+    @GetMapping("/print-parallel")
+    public void getNamesStudentsInConsole() {
+        studentService.getNameStudentsByThreads();
+    }
+
+    @GetMapping("/print-synchronized")
+    public void getNamesStudentsInConsoleSynchro() {
+        studentService.getNameStudentsByThreadsSynchro();
     }
 }
