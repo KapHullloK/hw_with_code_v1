@@ -110,7 +110,7 @@ public class StudentService {
                 .toList();
 
         int cnt_tasks = 2;
-        int cnt_names = 6;
+        int cnt_names = names.size();
         for (int i = 0; i < cnt_names; i += cnt_tasks) {
             final int start = i;
             final int end = Math.min(start + cnt_tasks, cnt_names);
@@ -130,7 +130,7 @@ public class StudentService {
                 .toList();
 
         int cnt_tasks = 2;
-        int cnt_names = 6;
+        int cnt_names = names.size();
         for (int i = 0; i < cnt_names; i += cnt_tasks) {
             final int start = i;
             final int end = Math.min(start + cnt_tasks, cnt_names);
