@@ -8,6 +8,7 @@ import ru.hogwarts.school.model.Student;
 import ru.hogwarts.school.service.FacultyService;
 
 import java.util.List;
+import java.util.stream.LongStream;
 
 @RestController
 @RequestMapping(path = "/faculty")
@@ -76,5 +77,20 @@ public class FacultyController {
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(students);
+    }
+
+    @GetMapping("/long-name")
+    public ResponseEntity<String> getLongestFacultyName() {
+        return ResponseEntity.ok(facultyService.getLongestFacultyName());
+    }
+
+    @GetMapping("/summ")
+    public ResponseEntity<Long> getSomeNum() {
+        int n = 1_000_000;
+        int bestRes = (n * (n + 1)) / 2;
+        long sum = LongStream.rangeClosed(1, n)
+                .parallel()
+                .sum();
+        return ResponseEntity.ok(sum);
     }
 }
